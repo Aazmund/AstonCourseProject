@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.fragment.app.FragmentTransaction
 import com.example.astoncourseproject.R
 
 private const val ARG_PARAM1 = "param1"
@@ -36,21 +37,41 @@ class NavigationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val characterNavigationFrame = view.findViewById<FrameLayout>(R.id.characterNavigationFrame).apply {
+        var state = "character"
+
+        view.findViewById<FrameLayout>(R.id.characterNavigationFrame).apply {
             setOnClickListener {
-                Toast.makeText(it.context, "character", Toast.LENGTH_SHORT).show()
+                if (state != "character"){
+                    state = "character"
+                    val chfr = CharactersFragment()
+                    val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.fragmentContainerView, chfr)
+                    transaction.commit()
+                }
             }
         }
 
-        val locationsNavigationFragment = view.findViewById<FrameLayout>(R.id.locationsNavigationFrame).apply {
+        view.findViewById<FrameLayout>(R.id.locationsNavigationFrame).apply {
             setOnClickListener {
-                Toast.makeText(it.context, "locations", Toast.LENGTH_SHORT).show()
+                if (state != "locations"){
+                    state = "locations"
+                    val chfr = LocationsFragment()
+                    val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.fragmentContainerView, chfr)
+                    transaction.commit()
+                }
             }
         }
 
-        val episodesNavigationFragment = view.findViewById<FrameLayout>(R.id.episodesNavigationFrame).apply {
+        view.findViewById<FrameLayout>(R.id.episodesNavigationFrame).apply {
             setOnClickListener {
-                Toast.makeText(it.context, "episodes", Toast.LENGTH_SHORT).show()
+                if (state != "episodes"){
+                    state = "episodes"
+                    val chfr = EpisodesFragment()
+                    val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.fragmentContainerView, chfr)
+                    transaction.commit()
+                }
             }
         }
     }
