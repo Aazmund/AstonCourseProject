@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_margin="8dp"
+    android:background="#efefef"
+    tools:context=".fragments.CharactersFragment">
+
+    <ImageView
+        android:id="@+id/characterImg"
+        android:layout_width="80dp"
+        android:layout_gravity="center"
+        android:layout_height="80dp" />
+
+    <TextView
+        android:id="@+id/textViewCharacterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        tools:text="Rick Sanchez" />
+
+    <TextView
+        android:id="@+id/textViewCharacterSpecies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Human"
+        android:layout_gravity="center"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/textViewCharacterGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Male"
+        android:layout_gravity="center"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textViewCharacterStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Alive"
+        android:layout_gravity="center"
+        android:textSize="18sp" />
+
+</LinearLayout>

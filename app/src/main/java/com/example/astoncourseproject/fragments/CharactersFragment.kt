@@ -6,8 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.astoncourseproject.R
+import com.example.astoncourseproject.RecyclerViewAdapters.CharacterRecyclerAdapter
+import com.example.astoncourseproject.entities.Character
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -41,10 +45,30 @@ class CharactersFragment : Fragment() {
                 isRefreshing = false
             }
         }
+
+        view.findViewById<RecyclerView?>(R.id.characterRecyclerView).apply {
+            layoutManager = GridLayoutManager(view.context, 2)
+            adapter = CharacterRecyclerAdapter(data())
+        }
+
     }
 
     private fun onRefresh(){
         Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun data(): List<Character>{
+        val data = mutableListOf<Character>()
+        repeat((0..30).count()) {
+            val character: Character = Character().apply {
+                characterName = "qqqqqq qqqqqq"
+                characterGender = "vewvewrvewrv"
+                characterStatus = "wvwqvqw wqe"
+                characterSpecies = "wvwrqvqrwvqwrv"
+            }
+            data.add(character)
+        }
+        return data
     }
 
 }
