@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.astoncourseproject.R
-import com.example.astoncourseproject.RecyclerViewAdapters.CharacterRecyclerAdapter
+import com.example.astoncourseproject.recyclerViewAdapters.CharacterRecyclerAdapter
 import com.example.astoncourseproject.entities.Character
 
 private const val ARG_PARAM1 = "param1"
@@ -46,7 +46,7 @@ class CharactersFragment : Fragment() {
             }
         }
 
-        view.findViewById<RecyclerView?>(R.id.characterRecyclerView).apply {
+        view.findViewById<RecyclerView>(R.id.characterRecyclerView).apply {
             layoutManager = GridLayoutManager(view.context, 2)
             adapter = CharacterRecyclerAdapter(data())
         }
@@ -70,5 +70,4 @@ class CharactersFragment : Fragment() {
         }
         return data
     }
-
 }

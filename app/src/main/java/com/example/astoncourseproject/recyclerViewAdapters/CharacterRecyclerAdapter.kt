@@ -1,4 +1,4 @@
-package com.example.astoncourseproject.RecyclerViewAdapters
+package com.example.astoncourseproject.recyclerViewAdapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,5 +42,4 @@ class CharacterRecyclerAdapter(private val characters: List<Character>):
             characterStatus.text = character.characterStatus
         }
     }
-
 }
