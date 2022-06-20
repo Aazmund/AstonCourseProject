@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -48,7 +49,10 @@ class CharactersFragment : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.characterRecyclerView).apply {
             layoutManager = GridLayoutManager(view.context, 2)
-            adapter = CharacterRecyclerAdapter(data())
+            val characterRecyclerAdapter = CharacterRecyclerAdapter(data()){
+                position -> onItemClicked(position)
+            }
+            adapter = characterRecyclerAdapter
         }
 
     }
@@ -69,5 +73,13 @@ class CharactersFragment : Fragment() {
             data.add(character)
         }
         return data
+    }
+
+    private fun onItemClicked(position: Int){
+        val characterDetailFragment = CharacterDetailFragment()
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        val replace = transaction.replace(R.id.fragmentContainerView, characterDetailFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }
