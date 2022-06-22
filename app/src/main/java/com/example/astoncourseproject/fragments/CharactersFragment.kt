@@ -1,5 +1,6 @@
 package com.example.astoncourseproject.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.astoncourseproject.R
 import com.example.astoncourseproject.recyclerViewAdapters.CharacterRecyclerAdapter
-import com.example.astoncourseproject.entities.Character
+import com.example.astoncourseproject.entities.CharacterResponse
+import com.example.astoncourseproject.network.Common
+import com.example.astoncourseproject.utils.ImageLoader
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -21,6 +27,9 @@ class CharactersFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var recyclerView: RecyclerView
+    lateinit var recyclerAdapter: CharacterRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,48 +46,54 @@ class CharactersFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_characters, container, false)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val pullToRefresh = view.findViewById<SwipeRefreshLayout>(R.id.characterRefreshLayout).apply {
+        recyclerView = view.findViewById(R.id.characterRecyclerView)
+        recyclerView.layoutManager = GridLayoutManager(view.context, 2)
+        recyclerAdapter = CharacterRecyclerAdapter(emptyList()){ position -> onItemClicked() }
+        recyclerView.adapter = recyclerAdapter
+
+        getAllCharacters(view)
+
+        view.findViewById<SwipeRefreshLayout>(R.id.characterRefreshLayout).apply {
             setOnRefreshListener {
-                onRefresh()
+                onRefresh(view)
                 isRefreshing = false
             }
         }
-
-        view.findViewById<RecyclerView>(R.id.characterRecyclerView).apply {
-            layoutManager = GridLayoutManager(view.context, 2)
-            val characterRecyclerAdapter = CharacterRecyclerAdapter(data()){
-                position -> onItemClicked(position)
-            }
-            adapter = characterRecyclerAdapter
-        }
-
     }
 
-    private fun onRefresh(){
+    private fun getAllCharacters(view: View){
+        val services = Common.retrofitService
+        services.getCharacterList().enqueue(object : Callback<CharacterResponse> {
+
+            override fun onResponse(call: Call<CharacterResponse>, response: Response<CharacterResponse>) {
+                val list = response.body()?.results
+                val imageLoader = ImageLoader()
+                if (list != null) {
+                    for (character in list){
+                        character.imageBitmap = imageLoader.convert(character.image, view.context)
+                    }
+                    recyclerAdapter.setCharacterList(list)
+                }
+            }
+
+            override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
+            }
+        })
+    }
+
+    private fun onRefresh(view: View){
+        getAllCharacters(view)
         Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
     }
 
-    private fun data(): List<Character>{
-        val data = mutableListOf<Character>()
-        repeat((0..30).count()) {
-            val character: Character = Character().apply {
-                characterName = "qqqqqq qqqqqq"
-                characterGender = "vewvewrvewrv"
-                characterStatus = "wvwqvqw wqe"
-                characterSpecies = "wvwrqvqrwvqwrv"
-            }
-            data.add(character)
-        }
-        return data
-    }
-
-    private fun onItemClicked(position: Int){
+    private fun onItemClicked() {
         val characterDetailFragment = CharacterDetailFragment()
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        val replace = transaction.replace(R.id.fragmentContainerView, characterDetailFragment)
+        transaction.replace(R.id.fragmentContainerView, characterDetailFragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }

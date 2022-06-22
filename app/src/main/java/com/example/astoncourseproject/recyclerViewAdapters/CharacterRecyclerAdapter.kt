@@ -1,8 +1,8 @@
 package com.example.astoncourseproject.recyclerViewAdapters
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -10,9 +10,8 @@ import com.example.astoncourseproject.R
 import com.example.astoncourseproject.entities.Character
 
 class CharacterRecyclerAdapter(
-    private val characters: List<Character>,
+    private var characters: List<Character>,
     private val onItemClicked: (position: Int) -> Unit): RecyclerView.Adapter<CharacterRecyclerAdapter.CharacterViewHolder>(){
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val itemView = LayoutInflater
             .from(parent.context)
@@ -26,6 +25,12 @@ class CharacterRecyclerAdapter(
 
     override fun getItemCount(): Int {
         return characters.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setCharacterList(list: List<Character>){
+        characters = list
+        notifyDataSetChanged()
     }
 
     class CharacterViewHolder(
@@ -44,11 +49,11 @@ class CharacterRecyclerAdapter(
         private val characterStatus: TextView = itemView.findViewById(R.id.textViewCharacterStatus)
 
         fun bind(character: Character) {
-            characterImg.setImageBitmap(character.characterImg)
-            characterName.text = character.characterName
-            characterSpecies.text = character.characterSpecies
-            characterGender.text = character.characterGender
-            characterStatus.text = character.characterStatus
+            characterImg.setImageBitmap(character.imageBitmap)
+            characterName.text = character.name
+            characterSpecies.text = character.species
+            characterGender.text = character.gender
+            characterStatus.text = character.status
         }
 
         override fun onClick(view: View){
