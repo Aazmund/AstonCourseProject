@@ -1,4 +1,4 @@
-package com.example.astoncourseproject.fragments
+package com.example.astoncourseproject.presentation.locations
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

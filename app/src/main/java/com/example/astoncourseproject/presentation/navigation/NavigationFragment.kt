@@ -1,4 +1,4 @@
-package com.example.astoncourseproject.fragments
+package com.example.astoncourseproject.presentation.navigation
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,9 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import com.example.astoncourseproject.R
+import com.example.astoncourseproject.presentation.characters.CharactersFragment
+import com.example.astoncourseproject.presentation.episodes.EpisodesFragment
+import com.example.astoncourseproject.presentation.locations.LocationsFragment
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -43,9 +46,9 @@ class NavigationFragment : Fragment() {
             setOnClickListener {
                 if (state != "character"){
                     state = "character"
-                    val chfr = CharactersFragment()
+                    val charactersFragment = CharactersFragment()
                     val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-                    transaction.replace(R.id.fragmentContainerView, chfr)
+                    transaction.replace(R.id.fragmentContainerView, charactersFragment)
                     transaction.commit()
                 }
             }
@@ -55,9 +58,9 @@ class NavigationFragment : Fragment() {
             setOnClickListener {
                 if (state != "locations"){
                     state = "locations"
-                    val chfr = LocationsFragment()
+                    val locationsFragment = LocationsFragment()
                     val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-                    transaction.replace(R.id.fragmentContainerView, chfr)
+                    transaction.replace(R.id.fragmentContainerView, locationsFragment)
                     transaction.commit()
                 }
             }
@@ -67,9 +70,9 @@ class NavigationFragment : Fragment() {
             setOnClickListener {
                 if (state != "episodes"){
                     state = "episodes"
-                    val chfr = EpisodesFragment()
+                    val episodesFragment = EpisodesFragment()
                     val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-                    transaction.replace(R.id.fragmentContainerView, chfr)
+                    transaction.replace(R.id.fragmentContainerView, episodesFragment)
                     transaction.commit()
                 }
             }

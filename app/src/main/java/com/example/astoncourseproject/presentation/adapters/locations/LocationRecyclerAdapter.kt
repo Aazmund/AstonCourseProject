@@ -1,4 +1,4 @@
-package com.example.astoncourseproject.recyclerViewAdapters
+package com.example.astoncourseproject.presentation.adapters.locations
 
 import android.view.LayoutInflater
 import android.view.View
