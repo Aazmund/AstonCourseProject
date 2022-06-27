@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import com.example.astoncourseproject.R
-import com.example.astoncourseproject.presentation.characters.CharactersFragment
-import com.example.astoncourseproject.presentation.episodes.EpisodesFragment
-import com.example.astoncourseproject.presentation.locations.LocationsFragment
+import com.example.astoncourseproject.presentation.fragments.characters.CharactersFragment
+import com.example.astoncourseproject.presentation.fragments.episodes.EpisodesFragment
+import com.example.astoncourseproject.presentation.fragments.locations.LocationsFragment
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"

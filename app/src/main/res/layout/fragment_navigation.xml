@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     app:layout_constraintHorizontal_chainStyle="spread"
     android:background="@color/design_default_color_primary"
-    tools:context=".fragments.NavigationFragment">
+    tools:context="presentation.navigation.NavigationFragment">
 
     <FrameLayout
         android:id="@+id/characterNavigationFrame"

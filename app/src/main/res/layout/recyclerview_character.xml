@@ -7,13 +7,13 @@
     android:padding="8dp"
     android:layout_margin="8dp"
     android:background="#efefef"
-    tools:context=".fragments.CharactersFragment">
+    tools:context=".presentation.fragments.characters.CharactersFragment">
 
     <ImageView
         android:id="@+id/characterImg"
-        android:layout_width="80dp"
+        android:layout_width="200dp"
         android:layout_gravity="center"
-        android:layout_height="80dp" />
+        android:layout_height="200dp" />
 
     <TextView
         android:id="@+id/textViewCharacterName"
