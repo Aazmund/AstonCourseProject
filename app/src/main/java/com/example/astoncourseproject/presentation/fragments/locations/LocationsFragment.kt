@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.astoncourseproject.R
 import com.example.astoncourseproject.presentation.adapters.LocationRecyclerAdapter
+import com.example.astoncourseproject.presentation.navigation.NavigationFragment
 import com.example.astoncourseproject.presentation.viewmodels.LocationViewModel
 import com.example.astoncourseproject.presentation.viewmodels.factory.LocationVMFactory
 
@@ -37,7 +40,9 @@ class LocationsFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.locationRecyclerView)
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
 
-        val adapter = LocationRecyclerAdapter(emptyList())
+        val adapter = LocationRecyclerAdapter(emptyList()){
+                position -> onItemClicked(position)
+        }
 
         recyclerView.adapter = adapter
 
@@ -45,7 +50,7 @@ class LocationsFragment : Fragment() {
             adapter.updateAdapter(it)
         }
 
-        val pullToRefresh = view.findViewById<SwipeRefreshLayout>(R.id.locationsRefreshLayout).apply {
+        view.findViewById<SwipeRefreshLayout>(R.id.locationsRefreshLayout).apply {
             setOnRefreshListener {
                 onRefresh()
                 isRefreshing = false
@@ -55,5 +60,17 @@ class LocationsFragment : Fragment() {
 
     private fun onRefresh(){
         Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onItemClicked(position: Int){
+        val manager: FragmentManager = parentFragmentManager
+        val locationDetailFragment = LocationDetailFragment()
+        val navigationFragment: NavigationFragment = manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+
+        transaction.replace(R.id.fragmentContainerView, locationDetailFragment)
+        transaction.hide(navigationFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

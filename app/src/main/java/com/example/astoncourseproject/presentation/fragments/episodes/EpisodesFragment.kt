@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.astoncourseproject.R
 import com.example.astoncourseproject.presentation.adapters.EpisodeRecyclerAdapter
+import com.example.astoncourseproject.presentation.navigation.NavigationFragment
 import com.example.astoncourseproject.presentation.viewmodels.EpisodeViewModel
 import com.example.astoncourseproject.presentation.viewmodels.factory.EpisodeVMFactory
 
@@ -36,7 +39,9 @@ class EpisodesFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.episodeRecyclerView)
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
 
-        val adapter = EpisodeRecyclerAdapter(emptyList())
+        val adapter = EpisodeRecyclerAdapter(emptyList()){
+                position -> onItemClicked(position)
+        }
 
         recyclerView.adapter = adapter
 
@@ -44,7 +49,7 @@ class EpisodesFragment : Fragment() {
             adapter.updateAdapter(it)
         }
 
-        val pullToRefresh = view.findViewById<SwipeRefreshLayout>(R.id.episodesRefreshLayout).apply {
+        view.findViewById<SwipeRefreshLayout>(R.id.episodesRefreshLayout).apply {
             setOnRefreshListener {
                 onRefresh()
                 isRefreshing = false
@@ -57,16 +62,15 @@ class EpisodesFragment : Fragment() {
         Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
     }
 
-//    private fun data(): List<Episode>{
-//        val data = mutableListOf<Episode>()
-//        repeat((0..30).count()) {
-//            val episode: Episode = Episode().apply {
-//                episodeName = "Pilot"
-//                episodeNumber = "S01E01"
-//                airDate = "December 2, 2013"
-//            }
-//            data.add(episode)
-//        }
-//        return data
-//    }
+    private fun onItemClicked(position: Int){
+        val manager: FragmentManager = parentFragmentManager
+        val navigationFragment: NavigationFragment = manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
+        val episodeDetailFragment = EpisodeDetailFragment()
+        val transaction: FragmentTransaction = manager.beginTransaction()
+
+        transaction.replace(R.id.fragmentContainerView, episodeDetailFragment)
+        transaction.hide(navigationFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 }

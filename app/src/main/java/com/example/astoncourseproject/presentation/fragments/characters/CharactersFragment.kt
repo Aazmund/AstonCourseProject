@@ -2,11 +2,12 @@ package com.example.astoncourseproject.presentation.fragments.characters
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.astoncourseproject.R
 import com.example.astoncourseproject.presentation.adapters.CharacterRecyclerAdapter
+import com.example.astoncourseproject.presentation.navigation.NavigationFragment
 import com.example.astoncourseproject.presentation.viewmodels.CharacterViewModel
 import com.example.astoncourseproject.presentation.viewmodels.factory.CharacterVMFactory
 
@@ -48,7 +50,7 @@ class CharactersFragment : Fragment() {
             adapter.updateAdapter(it)
         }
 
-        val pullToRefresh = view.findViewById<SwipeRefreshLayout>(R.id.characterRefreshLayout).apply {
+        view.findViewById<SwipeRefreshLayout>(R.id.characterRefreshLayout).apply {
             setOnRefreshListener {
                 onRefresh()
                 isRefreshing = false
@@ -62,9 +64,13 @@ class CharactersFragment : Fragment() {
     }
 
     private fun onItemClicked(position: Int){
+        val manager: FragmentManager = parentFragmentManager
         val characterDetailFragment = CharacterDetailFragment()
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        val replace = transaction.replace(R.id.fragmentContainerView, characterDetailFragment)
+        val navigationFragment: NavigationFragment = manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
+        val transaction: FragmentTransaction = manager.beginTransaction()
+
+        transaction.replace(R.id.fragmentContainerView, characterDetailFragment)
+        transaction.hide(navigationFragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }

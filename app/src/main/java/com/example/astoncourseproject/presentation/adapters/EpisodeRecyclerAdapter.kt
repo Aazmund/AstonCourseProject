@@ -9,14 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.astoncourseproject.R
 import com.example.astoncourseproject.domain.models.Episode
 
-class EpisodeRecyclerAdapter(private var episodes: List<Episode>):
+class EpisodeRecyclerAdapter(
+    private var episodes: List<Episode>,
+    private val onItemClicked: (position: Int) -> Unit):
     RecyclerView.Adapter<EpisodeRecyclerAdapter.EpisodeViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
         val itemView = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.recyclerview_episode, parent, false)
-        return EpisodeViewHolder(itemView)
+        return EpisodeViewHolder(itemView, onItemClicked)
     }
 
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
@@ -33,7 +35,14 @@ class EpisodeRecyclerAdapter(private var episodes: List<Episode>):
         notifyDataSetChanged()
     }
 
-    class EpisodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class EpisodeViewHolder(
+        itemView: View,
+        private val onItemClicked: (position: Int) -> Unit
+    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
+        }
 
         private val episodeName: TextView = itemView.findViewById(R.id.textViewEpisodeName)
         private val episodeNumber: TextView = itemView.findViewById(R.id.textViewEpisodeNumber)
@@ -43,6 +52,11 @@ class EpisodeRecyclerAdapter(private var episodes: List<Episode>):
             episodeName.text = episode.name
             episodeNumber.text = episode.episode
             airDate.text = episode.air_date
+        }
+
+        override fun onClick(view: View){
+            val position = adapterPosition
+            onItemClicked(position)
         }
     }
 }
