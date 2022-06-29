@@ -1,9 +1,10 @@
 package com.example.astoncourseproject.domain.models
 
 data class Character(
-    val name: String,
-    val image: String,
-    val status: String,
-    val species: String,
-    val gender: String,
+    var id: String,
+    var name: String,
+    var image: String,
+    var status: String,
+    var species: String,
+    var gender: String,
 )

@@ -1,27 +1,25 @@
 package com.example.astoncourseproject.data.network
 
-import com.example.astoncourseproject.data.dto.CharacterDTO
-import com.example.astoncourseproject.data.entities.Character
-import retrofit2.Call
+import com.example.astoncourseproject.data.dto.LocationDTO
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.*
+import retrofit2.http.GET
 
-interface RetrofitCharacterService {
-    @GET("character")
-    suspend fun getCharacterList(): Response<CharacterDTO>
+interface LocationsListService {
+    @GET("location")
+    suspend fun getLocationList(): Response<LocationDTO>
 
     companion object {
-        var retrofitService: RetrofitCharacterService? = null
+        var retrofitService: LocationsListService? = null
 
-        fun getInstance() : RetrofitCharacterService {
+        fun getInstance() : LocationsListService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://rickandmortyapi.com/api/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
-                retrofitService = retrofit.create(RetrofitCharacterService::class.java)
+                retrofitService = retrofit.create(LocationsListService::class.java)
             }
             return retrofitService!!
         }

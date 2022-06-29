@@ -6,24 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.astoncourseproject.MainActivity
 import com.example.astoncourseproject.R
+import com.example.astoncourseproject.presentation.viewmodels.CharacterDetailViewModel
+import com.example.astoncourseproject.presentation.viewmodels.factory.CharacterDetailVMFactory
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
+private const val ARG_PARAM1 = "id"
 
 class CharacterDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var vm: CharacterDetailViewModel
 
-    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
 
         val actionBar = (activity as MainActivity).supportActionBar
@@ -43,5 +41,17 @@ class CharacterDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        println(param1)
+
+        vm = ViewModelProvider(this, CharacterDetailVMFactory())[CharacterDetailViewModel::class.java]
+        vm.update(param1!!)
+
+    }
+
+    override fun onDestroy() {
+        val actionBar = (activity as MainActivity).supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+        actionBar?.setHomeButtonEnabled(false)
+        super.onDestroy()
     }
 }

@@ -6,20 +6,20 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
-interface RetrofitEpisodeService {
+interface EpisodesListService {
     @GET("episode")
     suspend fun getEpisodeList(): Response<EpisodeDTO>
 
     companion object {
-        var retrofitService: RetrofitEpisodeService? = null
+        var retrofitService: EpisodesListService? = null
 
-        fun getInstance() : RetrofitEpisodeService {
+        fun getInstance() : EpisodesListService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://rickandmortyapi.com/api/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
-                retrofitService = retrofit.create(RetrofitEpisodeService::class.java)
+                retrofitService = retrofit.create(EpisodesListService::class.java)
             }
             return retrofitService!!
         }

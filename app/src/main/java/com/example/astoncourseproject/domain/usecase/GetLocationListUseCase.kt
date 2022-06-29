@@ -15,6 +15,7 @@ class GetLocationListUseCase constructor(private val repository: LocationReposit
         if (response.isSuccessful){
             for (obj in response.body()!!.result){
                 val location = Location(
+                    id = obj.id,
                     name = obj.name,
                     type = obj.type,
                     dimension = obj.dimension

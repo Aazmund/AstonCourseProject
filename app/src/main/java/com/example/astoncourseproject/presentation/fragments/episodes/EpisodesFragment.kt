@@ -21,7 +21,7 @@ import com.example.astoncourseproject.presentation.viewmodels.factory.EpisodeVMF
 
 class EpisodesFragment : Fragment() {
 
-    lateinit var vm: EpisodeViewModel
+    private lateinit var vm: EpisodeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

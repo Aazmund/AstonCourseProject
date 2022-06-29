@@ -2,16 +2,16 @@ package com.example.astoncourseproject.presentation.viewmodels.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.astoncourseproject.data.network.RetrofitLocationService
+import com.example.astoncourseproject.data.network.LocationsListService
 import com.example.astoncourseproject.data.repository.LocationRepository
 import com.example.astoncourseproject.domain.usecase.GetLocationListUseCase
 import com.example.astoncourseproject.presentation.viewmodels.LocationViewModel
 
 class LocationVMFactory : ViewModelProvider.Factory {
 
-    private val retrofitLocationService = RetrofitLocationService.getInstance()
+    private val locationsListService = LocationsListService.getInstance()
 
-    private val repository = LocationRepository(retrofitLocationService)
+    private val repository = LocationRepository(locationsListService)
 
     private val getLocationListUseCase = GetLocationListUseCase(repository)
 

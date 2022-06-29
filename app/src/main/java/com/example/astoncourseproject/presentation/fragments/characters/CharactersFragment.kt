@@ -21,7 +21,7 @@ import com.example.astoncourseproject.presentation.viewmodels.factory.CharacterV
 
 class CharactersFragment : Fragment() {
 
-    lateinit var vm: CharacterViewModel
+    private lateinit var vm: CharacterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,8 +64,15 @@ class CharactersFragment : Fragment() {
     }
 
     private fun onItemClicked(position: Int){
+
+        val character = vm.liveData.value?.get(position)
+        val bundle = Bundle().apply {
+            putString("id", character?.id)
+        }
         val manager: FragmentManager = parentFragmentManager
-        val characterDetailFragment = CharacterDetailFragment()
+        val characterDetailFragment = CharacterDetailFragment().apply {
+            arguments = bundle
+        }
         val navigationFragment: NavigationFragment = manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
         val transaction: FragmentTransaction = manager.beginTransaction()
 

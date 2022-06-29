@@ -1,9 +1,9 @@
 package com.example.astoncourseproject.domain.usecase
 
-import com.example.astoncourseproject.data.repository.CharacterRepository
+import com.example.astoncourseproject.data.repository.CharactersListRepository
 import com.example.astoncourseproject.domain.models.Character
 
-class GetCharacterListUseCase constructor(private val repository: CharacterRepository) {
+class GetCharacterListUseCase constructor(private val repository: CharactersListRepository) {
 
     private val list = mutableListOf<Character>()
 
@@ -15,6 +15,7 @@ class GetCharacterListUseCase constructor(private val repository: CharacterRepos
         if (response.isSuccessful) {
             for (obj in response.body()!!.result) {
                 val character = Character(
+                    id = obj.id,
                     name = obj.name,
                     image = obj.image,
                     status = obj.status,

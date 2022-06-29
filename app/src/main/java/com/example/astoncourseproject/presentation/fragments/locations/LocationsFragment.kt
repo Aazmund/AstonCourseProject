@@ -21,7 +21,7 @@ import com.example.astoncourseproject.presentation.viewmodels.factory.LocationVM
 
 class LocationsFragment : Fragment() {
 
-    lateinit var vm: LocationViewModel
+    private lateinit var vm: LocationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

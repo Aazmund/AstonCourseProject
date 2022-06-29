@@ -1,7 +1,8 @@
 package com.example.astoncourseproject.data.entities
 
-class Location {
-    var name: String = ""
-    var type: String = ""
-    var dimension: String = ""
-}
+data class Location (
+    var id: String,
+    var name: String,
+    var type: String,
+    var dimension: String,
+)

@@ -15,6 +15,7 @@ class GetEpisodeListUseCase constructor(private val repository: EpisodeRepositor
         if(response.isSuccessful){
             for (obj in response.body()!!.result){
                 val episode = Episode(
+                    id = obj.id,
                     name = obj.name,
                     episode = obj.episode,
                     air_date = obj.airDate
