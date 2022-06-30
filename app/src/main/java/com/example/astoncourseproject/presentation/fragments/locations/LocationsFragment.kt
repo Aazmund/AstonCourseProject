@@ -23,6 +23,12 @@ class LocationsFragment : Fragment() {
 
     private lateinit var vm: LocationViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm = ViewModelProvider(this, LocationVMFactory())[LocationViewModel::class.java]
+        vm.update()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,21 +40,26 @@ class LocationsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vm = ViewModelProvider(this, LocationVMFactory())[LocationViewModel::class.java]
-        vm.update()
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.locationRecyclerView)
-        recyclerView.layoutManager = GridLayoutManager(view.context, 2)
-
-        val adapter = LocationRecyclerAdapter(emptyList()){
-                position -> onItemClicked(position)
+        val locationAdapter = LocationRecyclerAdapter(emptyList()) { position ->
+            onItemClicked(position)
         }
 
-        recyclerView.adapter = adapter
-
-        vm.liveData.observe(this){
-            adapter.updateAdapter(it)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.locationRecyclerView).apply {
+            layoutManager = GridLayoutManager(view.context, 2)
+            adapter = locationAdapter
         }
+
+        vm.liveData.observe(this) {
+            locationAdapter.updateAdapter(it)
+        }
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1)) {
+                    vm.addNewPage()
+                }
+            }
+        })
 
         view.findViewById<SwipeRefreshLayout>(R.id.locationsRefreshLayout).apply {
             setOnRefreshListener {
@@ -58,11 +69,12 @@ class LocationsFragment : Fragment() {
         }
     }
 
-    private fun onRefresh(){
+    private fun onRefresh() {
+        vm.update()
         Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
     }
 
-    private fun onItemClicked(position: Int){
+    private fun onItemClicked(position: Int) {
         val location = vm.liveData.value?.get(position)
         val bundle = Bundle().apply {
             putString("id", location?.id)
@@ -71,7 +83,8 @@ class LocationsFragment : Fragment() {
         val locationDetailFragment = LocationDetailFragment().apply {
             arguments = bundle
         }
-        val navigationFragment: NavigationFragment = manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
+        val navigationFragment: NavigationFragment =
+            manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
         val transaction: FragmentTransaction = manager.beginTransaction()
 
         transaction.replace(R.id.fragmentContainerView, locationDetailFragment)

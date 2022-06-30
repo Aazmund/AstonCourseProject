@@ -7,10 +7,10 @@ class GetLocationByIdUseCase constructor(private val repository: LocationByIdRep
 
     private val list = mutableListOf<Location>()
 
-    suspend fun execute(id: String): List<Location>{
+    suspend fun execute(id: String): List<Location> {
         val response = repository.getLocationById(id)
 
-        if (response.isSuccessful){
+        if (response.isSuccessful) {
             val location = Location(
                 id = response.body()!!.id,
                 name = response.body()!!.name,

@@ -49,10 +49,17 @@ class LocationDetailFragment : Fragment() {
         val locationType = view.findViewById<TextView>(R.id.locationTypeTextView)
         val locationDimension = view.findViewById<TextView>(R.id.locationDimensionTextView)
 
-        vm.liveData.observe(this){
+        vm.liveData.observe(this) {
             locationName.text = it[0].name
             locationType.text = it[0].type
             locationDimension.text = it[0].dimension
         }
+    }
+
+    override fun onDestroy() {
+        val actionBar = (activity as MainActivity).supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+        actionBar?.setHomeButtonEnabled(false)
+        super.onDestroy()
     }
 }

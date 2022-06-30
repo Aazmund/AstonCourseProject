@@ -9,14 +9,12 @@ import retrofit2.http.Path
 
 interface LocationByIdService {
     @GET("location/{id}")
-    suspend fun getLocationById(
-        @Path("id") id: String
-    ):Response<Location>
+    suspend fun getLocationById(@Path("id") id: String): Response<Location>
 
     companion object {
         var retrofitService: LocationByIdService? = null
 
-        fun getInstance() : LocationByIdService {
+        fun getInstance(): LocationByIdService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://rickandmortyapi.com/api/")

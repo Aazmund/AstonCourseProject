@@ -11,8 +11,8 @@ import com.example.astoncourseproject.domain.models.Episode
 
 class EpisodeRecyclerAdapter(
     private var episodes: List<Episode>,
-    private val onItemClicked: (position: Int) -> Unit):
-    RecyclerView.Adapter<EpisodeRecyclerAdapter.EpisodeViewHolder>(){
+    private val onItemClicked: (position: Int) -> Unit
+) : RecyclerView.Adapter<EpisodeRecyclerAdapter.EpisodeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
         val itemView = LayoutInflater
@@ -30,7 +30,7 @@ class EpisodeRecyclerAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateAdapter(list: List<Episode>){
+    fun updateAdapter(list: List<Episode>) {
         episodes = list
         notifyDataSetChanged()
     }
@@ -54,7 +54,7 @@ class EpisodeRecyclerAdapter(
             airDate.text = episode.air_date
         }
 
-        override fun onClick(view: View){
+        override fun onClick(view: View) {
             val position = adapterPosition
             onItemClicked(position)
         }

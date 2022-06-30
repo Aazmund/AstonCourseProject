@@ -9,14 +9,12 @@ import com.example.astoncourseproject.data.entities.Character
 
 interface CharacterByIdService {
     @GET("character/{id}")
-    suspend fun getCharacterById(
-        @Path("id") id: String
-    ): Response<Character>
+    suspend fun getCharacterById(@Path("id") id: String): Response<Character>
 
     companion object {
         var retrofitService: CharacterByIdService? = null
 
-        fun getInstance() : CharacterByIdService {
+        fun getInstance(): CharacterByIdService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://rickandmortyapi.com/api/")

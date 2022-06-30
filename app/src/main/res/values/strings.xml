@@ -2,4 +2,11 @@
     <string name="app_name">AstonCourseProject</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="characterStatus">Status:</string>
+    <string name="characterSpecies">Species:</string>
+    <string name="characterGender">Gender:</string>
+    <string name="episodeAirDate">Air_date:</string>
+    <string name="Episode">Episode:</string>
+    <string name="locationType">Type:</string>
+    <string name="locationDimension">Dimension:</string>
 </resources>

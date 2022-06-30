@@ -7,10 +7,10 @@ class GetCharacterByIdUseCase constructor(private val repository: CharacterByIdR
 
     private val list = mutableListOf<Character>()
 
-    suspend fun execute(id: String): List<Character>{
+    suspend fun execute(id: String): List<Character> {
         val response = repository.getCharacterById(id)
 
-        if (response.isSuccessful){
+        if (response.isSuccessful) {
             val character = Character(
                 id = response.body()!!.id,
                 name = response.body()!!.name,

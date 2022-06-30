@@ -7,14 +7,14 @@ import com.example.astoncourseproject.domain.usecase.GetCharacterByIdUseCase
 
 import kotlinx.coroutines.*
 
-class CharacterDetailViewModel (
+class CharacterDetailViewModel(
     private val getCharacterByIdUseCase: GetCharacterByIdUseCase
-):ViewModel(){
+) : ViewModel() {
 
     val liveData = MutableLiveData<List<Character>>()
     private var job: Job? = null
 
-    fun update(id: String){
+    fun update(id: String) {
         job = CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Main) {
                 liveData.value = getCharacterByIdUseCase.execute(id)

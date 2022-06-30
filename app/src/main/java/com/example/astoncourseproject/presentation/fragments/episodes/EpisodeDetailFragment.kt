@@ -48,10 +48,17 @@ class EpisodeDetailFragment : Fragment() {
         val episodeAirDate = view.findViewById<TextView>(R.id.episodeAirDateTextView)
         val episodeNumber = view.findViewById<TextView>(R.id.episodeNumberTextView)
 
-        vm.liveData.observe(this){
+        vm.liveData.observe(this) {
             episodeName.text = it[0].name
             episodeAirDate.text = it[0].air_date
             episodeNumber.text = it[0].episode
         }
+    }
+
+    override fun onDestroy() {
+        val actionBar = (activity as MainActivity).supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+        actionBar?.setHomeButtonEnabled(false)
+        super.onDestroy()
     }
 }

@@ -8,17 +8,31 @@ import kotlinx.coroutines.*
 
 class EpisodeViewModel(
     private val getEpisodeListUseCase: GetEpisodeListUseCase
-): ViewModel() {
+) : ViewModel() {
 
     val liveData = MutableLiveData<List<Episode>>()
+    private val listOfEpisode = mutableListOf<Episode>()
     private var job: Job? = null
+    private var page = 1
 
-    fun update(){
+    fun update() {
+        page = 1
+        listOfEpisode.clear()
         job = CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Main) {
-                liveData.value = getEpisodeListUseCase.execute()
+                listOfEpisode += getEpisodeListUseCase.execute(page)
+                liveData.value = listOfEpisode
             }
         }
     }
 
+    fun addNewPage() {
+        page++
+        job = CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                listOfEpisode += getEpisodeListUseCase.execute(page)
+                liveData.value = listOfEpisode
+            }
+        }
+    }
 }

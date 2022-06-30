@@ -1,4 +1,5 @@
 package com.example.astoncourseproject.presentation.adapters
+
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,8 @@ import com.example.astoncourseproject.domain.models.Character
 
 class CharacterRecyclerAdapter(
     private var characters: List<Character>,
-    private val onItemClicked: (position: Int) -> Unit): RecyclerView.Adapter<CharacterRecyclerAdapter.CharacterViewHolder>(){
+    private val onItemClicked: (position: Int) -> Unit
+) : RecyclerView.Adapter<CharacterRecyclerAdapter.CharacterViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val itemView = LayoutInflater
@@ -31,7 +33,7 @@ class CharacterRecyclerAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateAdapter(list: List<Character>){
+    fun updateAdapter(list: List<Character>) {
         characters = list
         notifyDataSetChanged()
     }
@@ -39,7 +41,7 @@ class CharacterRecyclerAdapter(
     class CharacterViewHolder(
         itemView: View,
         private val onItemClicked: (position: Int) -> Unit
-    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         init {
             itemView.setOnClickListener(this)
@@ -47,7 +49,8 @@ class CharacterRecyclerAdapter(
 
         private val characterImg: ImageView = itemView.findViewById(R.id.characterImg)
         private val characterName: TextView = itemView.findViewById(R.id.textViewCharacterName)
-        private val characterSpecies: TextView = itemView.findViewById(R.id.textViewCharacterSpecies)
+        private val characterSpecies: TextView =
+            itemView.findViewById(R.id.textViewCharacterSpecies)
         private val characterGender: TextView = itemView.findViewById(R.id.textViewCharacterGender)
         private val characterStatus: TextView = itemView.findViewById(R.id.textViewCharacterStatus)
 
@@ -57,10 +60,11 @@ class CharacterRecyclerAdapter(
             characterGender.text = character.gender
             characterStatus.text = character.status
 
-            Glide.with(itemView.context).load(character.image).diskCacheStrategy(DiskCacheStrategy.ALL).into(characterImg)
+            Glide.with(itemView.context).load(character.image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL).into(characterImg)
         }
 
-        override fun onClick(view: View){
+        override fun onClick(view: View) {
             val position = adapterPosition
             onItemClicked(position)
         }

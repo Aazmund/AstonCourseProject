@@ -7,12 +7,12 @@ class GetCharacterListUseCase constructor(private val repository: CharactersList
 
     private val list = mutableListOf<Character>()
 
-    suspend fun execute(): List<Character> {
+    suspend fun execute(page: Int): List<Character> {
         list.clear()
 
-        val response = repository.getAllCharacter()
+        val response = repository.getAllCharacter(page)
 
-        if (response.isSuccessful) {
+        if (response.isSuccessful && response.body() != null) {
             for (obj in response.body()!!.result) {
                 val character = Character(
                     id = obj.id,

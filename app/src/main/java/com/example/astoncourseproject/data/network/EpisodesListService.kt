@@ -5,10 +5,11 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface EpisodesListService {
     @GET("episode")
-    suspend fun getEpisodeList(): Response<EpisodeDTO>
+    suspend fun getEpisodeList(@Query("page") page: Int): Response<EpisodeDTO>
 
     companion object {
         var retrofitService: EpisodesListService? = null

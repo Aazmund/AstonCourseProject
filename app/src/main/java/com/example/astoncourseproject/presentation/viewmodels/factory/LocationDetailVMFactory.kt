@@ -7,7 +7,7 @@ import com.example.astoncourseproject.data.repository.LocationByIdRepository
 import com.example.astoncourseproject.domain.usecase.GetLocationByIdUseCase
 import com.example.astoncourseproject.presentation.viewmodels.LocationDetailViewModel
 
-class LocationDetailVMFactory(): ViewModelProvider.Factory {
+class LocationDetailVMFactory: ViewModelProvider.Factory {
 
     private val locationByIdService = LocationByIdService.getInstance()
     private val repository = LocationByIdRepository(locationByIdService)

@@ -7,7 +7,7 @@ import com.example.astoncourseproject.data.repository.EpisodeByIdRepository
 import com.example.astoncourseproject.domain.usecase.GetEpisodeByIdUseCase
 import com.example.astoncourseproject.presentation.viewmodels.EpisodeDetailViewModel
 
-class EpisodeDetailVMFactory(): ViewModelProvider.Factory {
+class EpisodeDetailVMFactory: ViewModelProvider.Factory {
 
     private val episodeByIdService = EpisodeByIdService.getInstance()
     private val repository = EpisodeByIdRepository(episodeByIdService)

@@ -8,15 +8,30 @@ import kotlinx.coroutines.*
 
 class LocationViewModel(
     private val getLocationListUseCase: GetLocationListUseCase
-):ViewModel() {
+) : ViewModel() {
 
     val liveData = MutableLiveData<List<Location>>()
+    private val listOfLocation = mutableListOf<Location>()
     private var job: Job? = null
+    private var page = 1
 
-    fun update(){
+    fun update() {
+        page = 1
+        listOfLocation.clear()
         job = CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Main) {
-                liveData.value = getLocationListUseCase.execute()
+                listOfLocation += getLocationListUseCase.execute(page)
+                liveData.value = listOfLocation
+            }
+        }
+    }
+
+    fun addNewPage() {
+        page++
+        job = CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                listOfLocation += getLocationListUseCase.execute(page)
+                liveData.value = listOfLocation
             }
         }
     }

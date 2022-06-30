@@ -1,7 +1,6 @@
 package com.example.astoncourseproject.presentation.fragments.characters
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.astoncourseproject.MainActivity
@@ -33,7 +31,10 @@ class CharacterDetailFragment : Fragment() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeButtonEnabled(true)
 
-        vm = ViewModelProvider(this, CharacterDetailVMFactory())[CharacterDetailViewModel::class.java]
+        vm = ViewModelProvider(
+            this,
+            CharacterDetailVMFactory()
+        )[CharacterDetailViewModel::class.java]
         vm.update(param1!!)
     }
 

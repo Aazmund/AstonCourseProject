@@ -7,7 +7,7 @@ import com.example.astoncourseproject.data.repository.CharacterByIdRepository
 import com.example.astoncourseproject.domain.usecase.GetCharacterByIdUseCase
 import com.example.astoncourseproject.presentation.viewmodels.CharacterDetailViewModel
 
-class CharacterDetailVMFactory() : ViewModelProvider.Factory {
+class CharacterDetailVMFactory : ViewModelProvider.Factory {
 
     private val characterByIdService = CharacterByIdService.getInstance()
 
@@ -18,6 +18,4 @@ class CharacterDetailVMFactory() : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CharacterDetailViewModel(getCharacterByIdUseCase) as T
     }
-
-
 }

@@ -23,6 +23,12 @@ class CharactersFragment : Fragment() {
 
     private lateinit var vm: CharacterViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm = ViewModelProvider(this, CharacterVMFactory())[CharacterViewModel::class.java]
+        vm.update()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,21 +40,26 @@ class CharactersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vm = ViewModelProvider(this, CharacterVMFactory())[CharacterViewModel::class.java]
-        vm.update()
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.characterRecyclerView)
-        recyclerView.layoutManager = GridLayoutManager(view.context, 2)
-
-        val adapter = CharacterRecyclerAdapter(emptyList()){
-                position -> onItemClicked(position)
+        val characterAdapter = CharacterRecyclerAdapter(emptyList()) { position ->
+            onItemClicked(position)
         }
 
-        recyclerView.adapter = adapter
+        val recyclerView = view.findViewById<RecyclerView>(R.id.characterRecyclerView).apply {
+            layoutManager = GridLayoutManager(view.context, 2)
+            adapter = characterAdapter
+        }
 
         vm.liveData.observe(this) {
-            adapter.updateAdapter(it)
+            characterAdapter.updateAdapter(it)
         }
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1)) {
+                    vm.addNewPage()
+                }
+            }
+        })
 
         view.findViewById<SwipeRefreshLayout>(R.id.characterRefreshLayout).apply {
             setOnRefreshListener {
@@ -58,13 +69,12 @@ class CharactersFragment : Fragment() {
         }
     }
 
-    private fun onRefresh(){
+    private fun onRefresh() {
         vm.update()
         Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
     }
 
-    private fun onItemClicked(position: Int){
-
+    private fun onItemClicked(position: Int) {
         val character = vm.liveData.value?.get(position)
         val bundle = Bundle().apply {
             putString("id", character?.id)
@@ -73,7 +83,8 @@ class CharactersFragment : Fragment() {
         val characterDetailFragment = CharacterDetailFragment().apply {
             arguments = bundle
         }
-        val navigationFragment: NavigationFragment = manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
+        val navigationFragment: NavigationFragment =
+            manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
         val transaction: FragmentTransaction = manager.beginTransaction()
 
         transaction.replace(R.id.fragmentContainerView, characterDetailFragment)

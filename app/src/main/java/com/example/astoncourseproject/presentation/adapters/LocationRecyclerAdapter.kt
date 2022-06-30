@@ -11,8 +11,8 @@ import com.example.astoncourseproject.domain.models.Location
 
 class LocationRecyclerAdapter(
     private var locations: List<Location>,
-    private val onItemClicked: (position: Int) -> Unit):
-    RecyclerView.Adapter<LocationRecyclerAdapter.LocationViewHolder>(){
+    private val onItemClicked: (position: Int) -> Unit
+) : RecyclerView.Adapter<LocationRecyclerAdapter.LocationViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
         val itemView = LayoutInflater
@@ -46,7 +46,8 @@ class LocationRecyclerAdapter(
 
         private val locationName: TextView = itemView.findViewById(R.id.textViewLocationName)
         private val locationType: TextView = itemView.findViewById(R.id.textViewLocationType)
-        private val locationDimension: TextView = itemView.findViewById(R.id.textViewLocationDimension)
+        private val locationDimension: TextView =
+            itemView.findViewById(R.id.textViewLocationDimension)
 
         fun bind(location: Location) {
             locationName.text = location.name
@@ -54,7 +55,7 @@ class LocationRecyclerAdapter(
             locationDimension.text = location.dimension
         }
 
-        override fun onClick(view: View){
+        override fun onClick(view: View) {
             val position = adapterPosition
             onItemClicked(position)
         }

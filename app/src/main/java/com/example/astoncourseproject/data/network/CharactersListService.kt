@@ -8,12 +8,12 @@ import retrofit2.http.*
 
 interface CharactersListService {
     @GET("character")
-    suspend fun getCharacterList(): Response<CharacterDTO>
+    suspend fun getCharacterList(@Query("page") page: Int): Response<CharacterDTO>
 
     companion object {
         var retrofitService: CharactersListService? = null
 
-        fun getInstance() : CharactersListService {
+        fun getInstance(): CharactersListService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://rickandmortyapi.com/api/")
