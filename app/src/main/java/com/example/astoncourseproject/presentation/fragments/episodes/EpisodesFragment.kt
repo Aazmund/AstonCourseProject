@@ -63,9 +63,16 @@ class EpisodesFragment : Fragment() {
     }
 
     private fun onItemClicked(position: Int){
+
+        val episode = vm.liveData.value?.get(position)
+        val bundle = Bundle().apply {
+            putString("id", episode?.id)
+        }
         val manager: FragmentManager = parentFragmentManager
+        val episodeDetailFragment = EpisodeDetailFragment().apply {
+            arguments = bundle
+        }
         val navigationFragment: NavigationFragment = manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
-        val episodeDetailFragment = EpisodeDetailFragment()
         val transaction: FragmentTransaction = manager.beginTransaction()
 
         transaction.replace(R.id.fragmentContainerView, episodeDetailFragment)

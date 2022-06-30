@@ -63,10 +63,16 @@ class LocationsFragment : Fragment() {
     }
 
     private fun onItemClicked(position: Int){
+        val location = vm.liveData.value?.get(position)
+        val bundle = Bundle().apply {
+            putString("id", location?.id)
+        }
         val manager: FragmentManager = parentFragmentManager
-        val locationDetailFragment = LocationDetailFragment()
+        val locationDetailFragment = LocationDetailFragment().apply {
+            arguments = bundle
+        }
         val navigationFragment: NavigationFragment = manager.findFragmentById(R.id.navigationFragmentContainerView) as NavigationFragment
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        val transaction: FragmentTransaction = manager.beginTransaction()
 
         transaction.replace(R.id.fragmentContainerView, locationDetailFragment)
         transaction.hide(navigationFragment)

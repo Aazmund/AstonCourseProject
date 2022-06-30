@@ -23,7 +23,6 @@ class GetLocationListUseCase constructor(private val repository: LocationReposit
                 list.add(location)
             }
         }
-        println(list)
         return list
     }
 }
