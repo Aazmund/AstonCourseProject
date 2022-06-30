@@ -1,51 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
     android:layout_margin="8dp"
-    android:background="#efefef"
-    tools:context=".presentation.fragments.characters.CharactersFragment">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/characterImg"
-        android:layout_width="200dp"
-        android:layout_gravity="center"
-        android:layout_height="200dp" />
-
-    <TextView
-        android:id="@+id/textViewCharacterName"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:orientation="vertical"
+        android:padding="8dp"
         android:layout_gravity="center"
-        tools:text="Rick Sanchez" />
+        tools:context=".presentation.fragments.characters.CharactersFragment">
 
-    <TextView
-        android:id="@+id/textViewCharacterSpecies"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Human"
-        android:layout_gravity="center"
-        android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/characterImg"
+            android:layout_width="200dp"
+            android:layout_gravity="center"
+            android:layout_height="200dp" />
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/textViewCharacterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            tools:text="Rick Sanchez" />
+
+        <TextView
+            android:id="@+id/textViewCharacterSpecies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Human"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="18sp" />
 
 
-    <TextView
-        android:id="@+id/textViewCharacterGender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Male"
-        android:layout_gravity="center"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/textViewCharacterGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Male"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/textViewCharacterStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Alive"
-        android:layout_gravity="center"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/textViewCharacterStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Alive"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="18sp" />
 
-</LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
