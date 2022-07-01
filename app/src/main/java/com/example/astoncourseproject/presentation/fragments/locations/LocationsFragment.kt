@@ -13,11 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.astoncourseproject.MainActivity
 import com.example.astoncourseproject.R
 import com.example.astoncourseproject.presentation.adapters.LocationRecyclerAdapter
 import com.example.astoncourseproject.presentation.navigation.NavigationFragment
-import com.example.astoncourseproject.presentation.viewmodels.LocationViewModel
-import com.example.astoncourseproject.presentation.viewmodels.factory.LocationVMFactory
+import com.example.astoncourseproject.presentation.viewmodels.location.LocationViewModel
+import com.example.astoncourseproject.presentation.viewmodels.location.factory.LocationVMFactory
 
 class LocationsFragment : Fragment() {
 
@@ -25,6 +26,7 @@ class LocationsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         vm = ViewModelProvider(this, LocationVMFactory())[LocationViewModel::class.java]
         vm.update()
     }
@@ -33,6 +35,9 @@ class LocationsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val actionBar = (activity as MainActivity).supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+        actionBar?.setHomeButtonEnabled(false)
         return inflater.inflate(R.layout.fragment_locations, container, false)
     }
 

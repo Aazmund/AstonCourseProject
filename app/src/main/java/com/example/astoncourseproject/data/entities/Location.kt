@@ -5,4 +5,5 @@ data class Location (
     var name: String,
     var type: String,
     var dimension: String,
+    val residents: List<String>
 )

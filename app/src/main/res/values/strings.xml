@@ -9,4 +9,9 @@
     <string name="Episode">Episode:</string>
     <string name="locationType">Type:</string>
     <string name="locationDimension">Dimension:</string>
+    <string name="list_of_episodes">List of Episodes</string>
+    <string name="characterOrigin">Origin:</string>
+    <string name="characterLocation">Location :</string>
+    <string name="location_list_of_characters">List of Residents</string>
+    <string name="list_of_characters">List of Characters</string>
 </resources>

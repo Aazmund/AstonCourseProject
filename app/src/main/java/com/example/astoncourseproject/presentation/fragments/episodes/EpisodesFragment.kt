@@ -13,11 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.astoncourseproject.MainActivity
 import com.example.astoncourseproject.R
 import com.example.astoncourseproject.presentation.adapters.EpisodeRecyclerAdapter
 import com.example.astoncourseproject.presentation.navigation.NavigationFragment
-import com.example.astoncourseproject.presentation.viewmodels.EpisodeViewModel
-import com.example.astoncourseproject.presentation.viewmodels.factory.EpisodeVMFactory
+import com.example.astoncourseproject.presentation.viewmodels.episode.EpisodeViewModel
+import com.example.astoncourseproject.presentation.viewmodels.episode.factory.EpisodeVMFactory
 
 class EpisodesFragment : Fragment() {
 
@@ -25,6 +26,7 @@ class EpisodesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         vm = ViewModelProvider(this, EpisodeVMFactory())[EpisodeViewModel::class.java]
         vm.update()
     }
@@ -33,6 +35,9 @@ class EpisodesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val actionBar = (activity as MainActivity).supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+        actionBar?.setHomeButtonEnabled(false)
         return inflater.inflate(R.layout.fragment_episodes, container, false)
     }
 
