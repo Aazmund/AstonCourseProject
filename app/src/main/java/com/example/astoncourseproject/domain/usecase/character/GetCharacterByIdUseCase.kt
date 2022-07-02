@@ -8,6 +8,7 @@ class GetCharacterByIdUseCase constructor(private val repository: CharacterByIdR
     suspend fun execute(id: String): List<Character> {
         val list = mutableListOf<Character>()
         val response = repository.getCharacterById(id)
+        println(response)
 
         if (response.isSuccessful && response.body() != null) {
             val character = Character(

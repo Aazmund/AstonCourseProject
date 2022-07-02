@@ -10,7 +10,7 @@ class GetLocationMultiIdUseCase constructor(private val repository: LocationMult
         val response = repository.getLocationMultiId(id)
 
         if (response.isSuccessful && response.body() != null) {
-            for (obj in response.body()!!.result) {
+            for (obj in response.body()!!) {
                 val location = Location(
                     id = obj.id,
                     name = obj.name,

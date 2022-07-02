@@ -1,7 +1,6 @@
 package com.example.astoncourseproject.data.network.episode
 
-import com.example.astoncourseproject.data.dto.episode.EpisodesByIdDTO
-import com.example.astoncourseproject.data.entities.Episode
+import com.example.astoncourseproject.data.dto.episode.EpisodeByIdDTO
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,7 +9,7 @@ import retrofit2.http.Path
 
 interface EpisodeByIdService {
     @GET("episode/{id}")
-    suspend fun getEpisodeById(@Path("id") id: String): Response<Episode>
+    suspend fun getEpisodeById(@Path("id") id: String): Response<EpisodeByIdDTO>
 
     companion object {
         var retrofitService: EpisodeByIdService? = null

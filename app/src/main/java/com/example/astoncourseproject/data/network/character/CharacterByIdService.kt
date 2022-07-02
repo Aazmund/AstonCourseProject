@@ -1,6 +1,6 @@
 package com.example.astoncourseproject.data.network.character
 
-import com.example.astoncourseproject.data.entities.Character
+import com.example.astoncourseproject.data.dto.character.CharacterByIdDTO
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -9,7 +9,7 @@ import retrofit2.http.Path
 
 interface CharacterByIdService {
     @GET("character/{id}")
-    suspend fun getCharacterById(@Path("id") id: String): Response<Character>
+    suspend fun getCharacterById(@Path("id") id: String): Response<CharacterByIdDTO>
 
     companion object {
         var retrofitService: CharacterByIdService? = null

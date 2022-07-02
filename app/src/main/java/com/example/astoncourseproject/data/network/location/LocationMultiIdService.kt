@@ -1,6 +1,6 @@
 package com.example.astoncourseproject.data.network.location
 
-import com.example.astoncourseproject.data.dto.location.LocationsByIdDTO
+import com.example.astoncourseproject.data.dto.location.LocationByIdDTO
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface LocationMultiIdService {
     @GET("location")
-    suspend fun getLocationMultiId(@Query("id") id: String): Response<LocationsByIdDTO>
+    suspend fun getLocationMultiId(@Query("id") id: String): Response<List<LocationByIdDTO>>
 
     companion object {
         var retrofitService: LocationMultiIdService? = null
