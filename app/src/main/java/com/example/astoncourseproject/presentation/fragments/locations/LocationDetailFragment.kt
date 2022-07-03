@@ -36,7 +36,7 @@ class LocationDetailFragment : Fragment() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeButtonEnabled(true)
 
-        vm = ViewModelProvider(this, LocationDetailVMFactory())[LocationDetailViewModel::class.java]
+        vm = ViewModelProvider(this, LocationDetailVMFactory(requireActivity().application))[LocationDetailViewModel::class.java]
         vm.update(param1!!)
     }
 

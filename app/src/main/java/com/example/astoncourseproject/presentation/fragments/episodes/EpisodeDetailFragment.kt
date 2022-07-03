@@ -35,7 +35,7 @@ class EpisodeDetailFragment : Fragment() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeButtonEnabled(true)
 
-        vm = ViewModelProvider(this, EpisodeDetailVMFactory())[EpisodeDetailViewModel::class.java]
+        vm = ViewModelProvider(this, EpisodeDetailVMFactory(requireActivity().application))[EpisodeDetailViewModel::class.java]
         vm.update(param1!!)
     }
 

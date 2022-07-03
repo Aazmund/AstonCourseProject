@@ -26,6 +26,28 @@ class LocationDbRepository(context: Context) {
         return list
     }
 
+    fun getLocationById(id: String): Location {
+        var location: Location
+        try{
+            location = Location(
+                db.getLocationById(id).id,
+                db.getLocationById(id).name,
+                db.getLocationById(id).type,
+                db.getLocationById(id).dimension,
+                db.getLocationById(id).residents.split(",").toList()
+            )
+        }catch (e: Exception){
+            location = Location(
+                "no local data",
+                "no local data",
+                "no local data",
+                "no local data",
+                listOf("no local data", "no local data")
+            )
+        }
+        return location
+    }
+
     private fun addLocation(location: Location) {
         db.addLocation(
             LocationEntity(

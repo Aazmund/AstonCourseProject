@@ -40,7 +40,7 @@ class CharacterDetailFragment : Fragment() {
 
         vm = ViewModelProvider(
             this,
-            CharacterDetailVMFactory()
+            CharacterDetailVMFactory(requireActivity().application)
         )[CharacterDetailViewModel::class.java]
         vm.update(param1!!)
     }

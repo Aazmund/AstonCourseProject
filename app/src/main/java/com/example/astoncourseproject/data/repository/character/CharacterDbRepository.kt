@@ -32,6 +32,44 @@ class CharacterDbRepository(context: Context) {
         return list
     }
 
+    fun getCharacterById(id: String): Character{
+        var character:Character
+        try {
+            character =  Character(
+                db.getCharacterById(id).id,
+                db.getCharacterById(id).name,
+                db.getCharacterById(id).status,
+                db.getCharacterById(id).species,
+                db.getCharacterById(id).gender,
+                mapOf(db.getCharacterById(id).origin.originName to db.getCharacterById(id).origin.originUrl),
+                mapOf(db.getCharacterById(id).location.locationName to db.getCharacterById(id).location.locationUrl),
+                db.getCharacterById(id).image,
+                db.getCharacterById(id).episode.split(",").toList()
+            )
+        }catch (e: Exception){
+            character =  Character(
+                "no local data",
+                "no local data",
+                "no local data",
+                "no local data",
+                "no local data",
+                mapOf("name" to "no local data", "url" to "no local data"),
+                mapOf("name" to "no local data", "url" to "no local data"),
+                "",
+                listOf("no local data", "no local data")
+            )
+        }
+        return character
+    }
+
+    fun getCharacterByIds(ids: List<String>): List<Character>{
+        val list = mutableListOf<Character>()
+        for (id in ids){
+            list.add(getCharacterById(id))
+        }
+        return list
+    }
+
     private fun addCharacter(character: Character) {
         db.addCharacter(
             CharacterEntity(
