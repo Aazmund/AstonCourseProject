@@ -1,21 +1,22 @@
 package com.example.astoncourseproject.presentation.viewmodels.episode.factory
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.astoncourseproject.data.network.episode.EpisodesListService
+import com.example.astoncourseproject.data.repository.episode.EpisodeDbRepository
 import com.example.astoncourseproject.data.repository.episode.EpisodeListRepository
 import com.example.astoncourseproject.domain.usecase.episode.GetEpisodeListUseCase
 import com.example.astoncourseproject.presentation.viewmodels.episode.EpisodeViewModel
 
-class EpisodeVMFactory : ViewModelProvider.Factory {
+class EpisodeVMFactory(private val application: Application) : ViewModelProvider.Factory {
 
     private val episodesListService = EpisodesListService.getInstance()
-
     private val repository = EpisodeListRepository(episodesListService)
-
     private val getEpisodeListUseCase = GetEpisodeListUseCase(repository)
+    private val episodeDbRepository = EpisodeDbRepository(application)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return EpisodeViewModel(getEpisodeListUseCase) as T
+        return EpisodeViewModel(application, getEpisodeListUseCase, episodeDbRepository) as T
     }
 }

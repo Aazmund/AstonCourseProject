@@ -26,9 +26,7 @@ class EpisodesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        vm = ViewModelProvider(this, EpisodeVMFactory())[EpisodeViewModel::class.java]
-        vm.update()
+        vm = ViewModelProvider(this, EpisodeVMFactory(requireActivity().application))[EpisodeViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -43,6 +41,7 @@ class EpisodesFragment : Fragment() {
 
     @SuppressLint("FragmentLiveDataObserve")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        vm.update()
 
         val episodeAdapter = EpisodeRecyclerAdapter(emptyList()) { position ->
             onItemClicked(position)
@@ -75,7 +74,6 @@ class EpisodesFragment : Fragment() {
 
     private fun onRefresh() {
         vm.update()
-        Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
     }
 
     private fun onItemClicked(position: Int) {

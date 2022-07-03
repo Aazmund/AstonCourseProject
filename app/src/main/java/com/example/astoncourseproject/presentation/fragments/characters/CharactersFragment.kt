@@ -19,6 +19,7 @@ import com.example.astoncourseproject.presentation.adapters.CharacterRecyclerAda
 import com.example.astoncourseproject.presentation.navigation.NavigationFragment
 import com.example.astoncourseproject.presentation.viewmodels.character.CharacterViewModel
 import com.example.astoncourseproject.presentation.viewmodels.character.factory.CharacterVMFactory
+import com.example.astoncourseproject.utils.NetworkConnection
 
 class CharactersFragment : Fragment() {
 
@@ -26,9 +27,7 @@ class CharactersFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        vm = ViewModelProvider(this, CharacterVMFactory())[CharacterViewModel::class.java]
-        vm.update()
+        vm = ViewModelProvider(this, CharacterVMFactory(requireActivity().application))[CharacterViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -44,6 +43,7 @@ class CharactersFragment : Fragment() {
     @SuppressLint("FragmentLiveDataObserve")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        vm.update()
 
         val characterAdapter = CharacterRecyclerAdapter(emptyList()) { position ->
             onItemClicked(position)
@@ -76,7 +76,6 @@ class CharactersFragment : Fragment() {
 
     private fun onRefresh() {
         vm.update()
-        Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
     }
 
     private fun onItemClicked(position: Int) {

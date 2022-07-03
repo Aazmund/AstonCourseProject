@@ -27,7 +27,7 @@ class LocationsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm = ViewModelProvider(this, LocationVMFactory())[LocationViewModel::class.java]
+        vm = ViewModelProvider(this, LocationVMFactory(requireActivity().application))[LocationViewModel::class.java]
         vm.update()
     }
 
@@ -76,7 +76,6 @@ class LocationsFragment : Fragment() {
 
     private fun onRefresh() {
         vm.update()
-        Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
     }
 
     private fun onItemClicked(position: Int) {
