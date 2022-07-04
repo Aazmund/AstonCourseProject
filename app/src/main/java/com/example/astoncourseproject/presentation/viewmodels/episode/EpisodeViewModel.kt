@@ -4,7 +4,6 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.astoncourseproject.data.repository.episode.EpisodeDbRepository
 import com.example.astoncourseproject.domain.models.Episode
 import com.example.astoncourseproject.domain.usecase.episode.GetEpisodeListUseCase
@@ -81,5 +80,9 @@ class EpisodeViewModel(
                 liveData.value = listOfEpisode
             }
         }
+    }
+
+    fun registerFilterChanged(search: String){
+        println(search)
     }
 }

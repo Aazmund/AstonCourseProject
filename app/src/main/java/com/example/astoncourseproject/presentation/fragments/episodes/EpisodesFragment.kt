@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.PopupWindow
+import android.widget.SearchView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
@@ -38,7 +41,7 @@ class EpisodesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_episodes, container, false)
     }
 
-    @SuppressLint("FragmentLiveDataObserve")
+    @SuppressLint("FragmentLiveDataObserve", "InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         vm.update()
 
@@ -67,6 +70,29 @@ class EpisodesFragment : Fragment() {
             setOnRefreshListener {
                 onRefresh()
                 isRefreshing = false
+            }
+        }
+
+        view.findViewById<Button>(R.id.addEpisodeFiltersButton).apply {
+            setOnClickListener {
+                val window = PopupWindow(view)
+                val v = layoutInflater.inflate(R.layout.episode_filters, null)
+                window.contentView = v
+                v.findViewById<Button>(R.id.applyFiltersButton).apply {
+                    setOnClickListener {
+                        var search = ""
+                        v.findViewById<SearchView>(R.id.searchView).apply {
+                            search = this.query.toString()
+                        }
+                        vm.registerFilterChanged(search)
+                        window.dismiss()
+                    }
+                }
+                window.isFocusable = true
+                window.width = ViewGroup.LayoutParams.MATCH_PARENT
+                window.height = ViewGroup.LayoutParams.MATCH_PARENT
+                window.showAtLocation(view, 1, 0, 0)
+                window.update()
             }
         }
     }

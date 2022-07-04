@@ -79,4 +79,9 @@ class LocationViewModel(
             }
         }
     }
+
+    fun registerFilterChanged(name: String, ids: List<String>){
+        println(name)
+        println(ids)
+    }
 }

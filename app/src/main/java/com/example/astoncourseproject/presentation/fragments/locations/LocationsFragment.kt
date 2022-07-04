@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.PopupWindow
+import android.widget.SearchView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +21,8 @@ import com.example.astoncourseproject.presentation.adapters.LocationRecyclerAdap
 import com.example.astoncourseproject.presentation.navigation.NavigationFragment
 import com.example.astoncourseproject.presentation.viewmodels.location.LocationViewModel
 import com.example.astoncourseproject.presentation.viewmodels.location.factory.LocationVMFactory
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 
 class LocationsFragment : Fragment() {
 
@@ -40,7 +45,7 @@ class LocationsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_locations, container, false)
     }
 
-    @SuppressLint("FragmentLiveDataObserve")
+    @SuppressLint("FragmentLiveDataObserve", "InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -69,6 +74,35 @@ class LocationsFragment : Fragment() {
             setOnRefreshListener {
                 onRefresh()
                 isRefreshing = false
+            }
+        }
+
+        view.findViewById<Button>(R.id.addLocationFiltersButton).apply {
+            setOnClickListener {
+                val window = PopupWindow(view)
+                val v = layoutInflater.inflate(R.layout.location_filters, null)
+                window.contentView = v
+                v.findViewById<Button>(R.id.applyFiltersButton).apply {
+                    setOnClickListener {
+                        val titles = mutableListOf<String>()
+                        var search = ""
+                        val g1 = v.findViewById<ChipGroup>(R.id.chipGroup)
+                        v.findViewById<SearchView>(R.id.searchView).apply {
+                            search = this.query.toString()
+                        }
+                        var ids = g1.checkedChipIds
+                        ids.forEach { id ->
+                            titles.add(g1.findViewById<Chip>(id).text.toString())
+                        }
+                        vm.registerFilterChanged(search, titles)
+                        window.dismiss()
+                    }
+                }
+                window.isFocusable = true
+                window.width = ViewGroup.LayoutParams.MATCH_PARENT
+                window.height = ViewGroup.LayoutParams.MATCH_PARENT
+                window.showAtLocation(view, 1, 0, 0)
+                window.update()
             }
         }
     }

@@ -81,4 +81,9 @@ class CharacterViewModel(
             }
         }
     }
+
+    fun registerFilterChanged(name: String, ids: List<String>){
+        println(name)
+        println(ids)
+    }
 }
