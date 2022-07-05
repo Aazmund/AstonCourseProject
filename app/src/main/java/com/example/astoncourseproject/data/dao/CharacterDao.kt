@@ -11,6 +11,9 @@ interface CharacterDao {
     @Query("SELECT*FROM characters_table WHERE id=:id")
     fun getCharacterById(id: String): CharacterEntity
 
+    @Query("SELECT*FROM characters_table WHERE name=:name")
+    fun getCharacterByName(name: String): List<CharacterEntity>
+
     @Query("SELECT*FROM characters_table WHERE id >= :start AND id <= :end")
     fun getCharactersByPage(start: Int, end: Int): List<CharacterEntity>
 

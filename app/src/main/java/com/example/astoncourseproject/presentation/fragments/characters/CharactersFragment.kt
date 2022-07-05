@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
+import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -47,7 +48,9 @@ class CharactersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vm.update()
-
+        view.findViewById<ProgressBar>(R.id.characterListProgressBar).apply {
+            visibility = ProgressBar.GONE
+        }
         val characterAdapter = CharacterRecyclerAdapter(emptyList()) { position ->
             onItemClicked(position)
         }
@@ -63,7 +66,7 @@ class CharactersFragment : Fragment() {
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1)) {
+                if (!recyclerView.canScrollVertically(1) && vm.liveData.value?.size!! >= 20) {
                     vm.addNewPage()
                 }
             }
@@ -83,27 +86,26 @@ class CharactersFragment : Fragment() {
                 window.contentView = v
                 v.findViewById<Button>(R.id.applyFiltersButton).apply {
                     setOnClickListener {
-                        val titles = mutableListOf<String>()
-                        var search = ""
+                        val titles = mutableMapOf<String, String>()
                         v.findViewById<SearchView>(R.id.searchView).apply {
-                            search = this.query.toString()
+                            titles["name"] = this.query.toString()
                         }
                         val g1 = v.findViewById<ChipGroup>(R.id.chipGroup)
                         val g2 = v.findViewById<ChipGroup>(R.id.chipGroup2)
                         val g3 = v.findViewById<ChipGroup>(R.id.chipGroup3)
                         var ids = g1.checkedChipIds
                         ids.forEach { id ->
-                            titles.add(g1.findViewById<Chip>(id).text.toString())
+                            titles["status"] = g1.findViewById<Chip>(id).text.toString()
                         }
                         ids = g2.checkedChipIds
                         ids.forEach { id ->
-                            titles.add(g2.findViewById<Chip>(id).text.toString())
+                            titles["species"] = g2.findViewById<Chip>(id).text.toString()
                         }
                         ids = g3.checkedChipIds
                         ids.forEach { id ->
-                            titles.add(g3.findViewById<Chip>(id).text.toString())
+                            titles["gender"] = g3.findViewById<Chip>(id).text.toString()
                         }
-                        vm.registerFilterChanged(search, titles)
+                        vm.registerFilterChanged(titles)
                         window.dismiss()
                     }
                 }

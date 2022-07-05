@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.astoncourseproject.data.repository.location.LocationDbRepository
 import com.example.astoncourseproject.domain.models.Location
+import com.example.astoncourseproject.domain.usecase.location.GetLocationFilterListUseCase
 import com.example.astoncourseproject.domain.usecase.location.GetLocationListUseCase
 import com.example.astoncourseproject.utils.NetworkConnection
 import kotlinx.coroutines.*
@@ -13,7 +14,8 @@ import kotlinx.coroutines.*
 class LocationViewModel(
     application: Application,
     private val getLocationListUseCase: GetLocationListUseCase,
-    private val locationDbRepository: LocationDbRepository
+    private val locationDbRepository: LocationDbRepository,
+    private val getLocationFilterListUseCase: GetLocationFilterListUseCase
 ) : AndroidViewModel(application) {
 
     val liveData = MutableLiveData<List<Location>>()
@@ -48,6 +50,7 @@ class LocationViewModel(
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
             }
+            this.cancel()
         }
     }
 
@@ -60,6 +63,7 @@ class LocationViewModel(
                     liveData.value = listOfLocation
                     locationDbRepository.addLocationsList(listOfLocation)
                 }
+                this.cancel()
             }
         }else{
             job = CoroutineScope(Dispatchers.IO).launch {
@@ -67,6 +71,7 @@ class LocationViewModel(
                     listOfLocation += locationDbRepository.getLocationByPage(page)
                     liveData.value = listOfLocation
                 }
+                this.cancel()
             }
         }
     }
@@ -77,11 +82,43 @@ class LocationViewModel(
                 listOfLocation += locationDbRepository.getLocationByPage(page)
                 liveData.value = listOfLocation
             }
+            this.cancel()
         }
     }
 
-    fun registerFilterChanged(name: String, ids: List<String>){
-        println(name)
-        println(ids)
+    fun registerFilterChanged(filters: Map<String, String>){
+        if (checkConnection()){
+            filterNetwork(filters)
+        }else{
+            filterLocal(filters["name"].toString())
+        }
+    }
+
+    private fun filterNetwork(filters: Map<String, String>) {
+        job = CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                val list = getLocationFilterListUseCase.execute(filters)
+                if (list.isEmpty()){
+                    Toast.makeText(context, "Nothing found", Toast.LENGTH_SHORT).show()
+                }else {
+                    liveData.value = list
+                }
+            }
+            this.cancel()
+        }
+    }
+
+    private fun filterLocal(name: String){
+        job = CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                val list = locationDbRepository.getLocationByName(name)
+                if (list.isEmpty()){
+                    Toast.makeText(context, "Nothing found", Toast.LENGTH_SHORT).show()
+                }else {
+                    liveData.value = list
+                }
+            }
+            this.cancel()
+        }
     }
 }

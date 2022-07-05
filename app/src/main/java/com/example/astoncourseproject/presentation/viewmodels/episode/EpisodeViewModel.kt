@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.astoncourseproject.data.repository.episode.EpisodeDbRepository
 import com.example.astoncourseproject.domain.models.Episode
+import com.example.astoncourseproject.domain.usecase.episode.GetEpisodeFilterListUseCase
 import com.example.astoncourseproject.domain.usecase.episode.GetEpisodeListUseCase
 import com.example.astoncourseproject.utils.NetworkConnection
 import kotlinx.coroutines.*
@@ -13,7 +14,8 @@ import kotlinx.coroutines.*
 class EpisodeViewModel(
     application: Application,
     private val getEpisodeListUseCase: GetEpisodeListUseCase,
-    private val episodeDbRepository: EpisodeDbRepository
+    private val episodeDbRepository: EpisodeDbRepository,
+    private val getEpisodeFilterListUseCase: GetEpisodeFilterListUseCase
 ) : AndroidViewModel(application) {
 
     val liveData = MutableLiveData<List<Episode>>()
@@ -48,6 +50,7 @@ class EpisodeViewModel(
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
             }
+            this.cancel()
         }
     }
 
@@ -60,6 +63,7 @@ class EpisodeViewModel(
                     liveData.value = listOfEpisode
                     episodeDbRepository.addListOfEpisodes(listOfEpisode)
                 }
+                this.cancel()
             }
         }else{
             job = CoroutineScope(Dispatchers.IO).launch {
@@ -67,6 +71,7 @@ class EpisodeViewModel(
                     listOfEpisode += episodeDbRepository.getEpisodeByPage(page)
                     liveData.value = listOfEpisode
                 }
+                this.cancel()
             }
         }
     }
@@ -79,10 +84,43 @@ class EpisodeViewModel(
                 listOfEpisode += episodeDbRepository.getEpisodeByPage(page)
                 liveData.value = listOfEpisode
             }
+            this.cancel()
         }
     }
 
-    fun registerFilterChanged(search: String){
-        println(search)
+    fun registerFilterChanged(filters: Map<String, String>){
+        if (checkConnection()){
+            filterNetwork(filters)
+        }else{
+            filterLocal(filters["name"].toString())
+        }
+    }
+
+    private fun filterNetwork(filters: Map<String, String>){
+        job = CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                val list = getEpisodeFilterListUseCase.execute(filters)
+                if (list.isEmpty()){
+                    Toast.makeText(context, "Nothing found", Toast.LENGTH_SHORT).show()
+                }else {
+                    liveData.value = list
+                }
+            }
+            this.cancel()
+        }
+    }
+
+    private fun filterLocal(name: String){
+        job = CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                val list = episodeDbRepository.getEpisodeByName(name)
+                if (list.isEmpty()){
+                    Toast.makeText(context, "Nothing found", Toast.LENGTH_SHORT).show()
+                }else {
+                    liveData.value = list
+                }
+            }
+            this.cancel()
+        }
     }
 }

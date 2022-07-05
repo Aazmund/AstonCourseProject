@@ -7,13 +7,15 @@ import androidx.lifecycle.MutableLiveData
 import com.example.astoncourseproject.data.repository.character.CharacterDbRepository
 import com.example.astoncourseproject.domain.usecase.character.GetCharacterListUseCase
 import com.example.astoncourseproject.domain.models.Character
+import com.example.astoncourseproject.domain.usecase.character.GetCharacterFilterListUseCase
 import com.example.astoncourseproject.utils.NetworkConnection
 import kotlinx.coroutines.*
 
 class CharacterViewModel(
     application: Application,
     private val getCharacterListUseCase: GetCharacterListUseCase,
-    private val characterDbRepository: CharacterDbRepository
+    private val characterDbRepository: CharacterDbRepository,
+    private val getCharacterFilterListUseCase: GetCharacterFilterListUseCase
 ) : AndroidViewModel(application) {
 
     val liveData = MutableLiveData<List<Character>>()
@@ -48,6 +50,7 @@ class CharacterViewModel(
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
             }
+            this.cancel()
         }
     }
 
@@ -60,6 +63,7 @@ class CharacterViewModel(
                     liveData.value = listOfCharacter
                     characterDbRepository.addListOfCharacters(listOfCharacter)
                 }
+                this.cancel()
             }
         }else{
             job = CoroutineScope(Dispatchers.IO).launch {
@@ -67,6 +71,7 @@ class CharacterViewModel(
                     listOfCharacter += characterDbRepository.getCharacterByPage(page)
                     liveData.value = listOfCharacter
                 }
+                this.cancel()
             }
         }
     }
@@ -79,11 +84,43 @@ class CharacterViewModel(
                 listOfCharacter += characterDbRepository.getCharacterByPage(page)
                 liveData.value = listOfCharacter
             }
+            this.cancel()
         }
     }
 
-    fun registerFilterChanged(name: String, ids: List<String>){
-        println(name)
-        println(ids)
+    fun registerFilterChanged(filters: Map<String, String>){
+        if (checkConnection()){
+            filterNetwork(filters)
+        }else{
+            filterLocal(filters["name"].toString())
+        }
+    }
+
+    private fun filterNetwork(filters: Map<String, String>){
+        job = CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                val list = getCharacterFilterListUseCase.execute(filters)
+                if (list.isEmpty()){
+                    Toast.makeText(context, "Nothing found", Toast.LENGTH_SHORT).show()
+                }else {
+                    liveData.value = list
+                }
+            }
+            this.cancel()
+        }
+    }
+
+    private fun filterLocal(name: String){
+        job = CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                val list = characterDbRepository.getCharacterByName(name)
+                if (list.isEmpty()){
+                    Toast.makeText(context, "Nothing found", Toast.LENGTH_SHORT).show()
+                }else {
+                    liveData.value = list
+                }
+            }
+            this.cancel()
+        }
     }
 }

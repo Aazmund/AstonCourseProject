@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
+import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -32,7 +33,6 @@ class LocationsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         vm = ViewModelProvider(this, LocationVMFactory(requireActivity().application))[LocationViewModel::class.java]
-        vm.update()
     }
 
     override fun onCreateView(
@@ -48,6 +48,10 @@ class LocationsFragment : Fragment() {
     @SuppressLint("FragmentLiveDataObserve", "InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        vm.update()
+        view.findViewById<ProgressBar>(R.id.locationProgressBar).apply {
+            visibility = ProgressBar.GONE
+        }
 
         val locationAdapter = LocationRecyclerAdapter(emptyList()) { position ->
             onItemClicked(position)
@@ -64,7 +68,7 @@ class LocationsFragment : Fragment() {
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1)) {
+                if (!recyclerView.canScrollVertically(1) && vm.liveData.value?.size!! >= 20) {
                     vm.addNewPage()
                 }
             }
@@ -84,17 +88,16 @@ class LocationsFragment : Fragment() {
                 window.contentView = v
                 v.findViewById<Button>(R.id.applyFiltersButton).apply {
                     setOnClickListener {
-                        val titles = mutableListOf<String>()
-                        var search = ""
+                        val titles = mutableMapOf<String, String>()
                         val g1 = v.findViewById<ChipGroup>(R.id.chipGroup)
                         v.findViewById<SearchView>(R.id.searchView).apply {
-                            search = this.query.toString()
+                            titles["name"] = this.query.toString()
                         }
                         var ids = g1.checkedChipIds
                         ids.forEach { id ->
-                            titles.add(g1.findViewById<Chip>(id).text.toString())
+                            titles["type"] = g1.findViewById<Chip>(id).text.toString()
                         }
-                        vm.registerFilterChanged(search, titles)
+                        vm.registerFilterChanged(titles)
                         window.dismiss()
                     }
                 }

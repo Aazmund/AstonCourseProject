@@ -13,9 +13,9 @@ class CharacterDbRepository(context: Context) {
 
     fun getAllCharacters() = db.getAllCharacters()
 
-    fun getCharacterByPage(page: Int): List<Character>{
+    fun getCharacterByPage(page: Int): List<Character> {
         val list = mutableListOf<Character>()
-        for (obj in db.getCharactersByPage((page - 1) * 20 + 1, (page - 1) * 20 + 20)){
+        for (obj in db.getCharactersByPage((page - 1) * 20 + 1, (page - 1) * 20 + 20)) {
             val character = Character(
                 obj.id,
                 obj.name,
@@ -32,10 +32,10 @@ class CharacterDbRepository(context: Context) {
         return list
     }
 
-    fun getCharacterById(id: String): Character{
-        var character:Character
+    fun getCharacterById(id: String): Character {
+        var character: Character
         try {
-            character =  Character(
+            character = Character(
                 db.getCharacterById(id).id,
                 db.getCharacterById(id).name,
                 db.getCharacterById(id).status,
@@ -46,8 +46,8 @@ class CharacterDbRepository(context: Context) {
                 db.getCharacterById(id).image,
                 db.getCharacterById(id).episode.split(",").toList()
             )
-        }catch (e: Exception){
-            character =  Character(
+        } catch (e: Exception) {
+            character = Character(
                 "no local data",
                 "no local data",
                 "no local data",
@@ -62,9 +62,32 @@ class CharacterDbRepository(context: Context) {
         return character
     }
 
-    fun getCharacterByIds(ids: List<String>): List<Character>{
+    fun getCharacterByName(name: String): List<Character> {
         val list = mutableListOf<Character>()
-        for (id in ids){
+        try {
+            for (obj in db.getCharacterByName(name)) {
+                val character = Character(
+                    obj.id,
+                    obj.name,
+                    obj.status,
+                    obj.species,
+                    obj.gender,
+                    mapOf(obj.origin.originName to obj.origin.originUrl),
+                    mapOf(obj.location.locationName to obj.location.locationUrl),
+                    obj.image,
+                    obj.episode.split(",").toList()
+                )
+                list.add(character)
+            }
+        } catch (e: Exception) {
+
+        }
+        return list
+    }
+
+    fun getCharacterByIds(ids: List<String>): List<Character> {
+        val list = mutableListOf<Character>()
+        for (id in ids) {
             list.add(getCharacterById(id))
         }
         return list

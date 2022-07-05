@@ -48,6 +48,23 @@ class EpisodeDbRepository(context: Context) {
         return episode
     }
 
+    fun getEpisodeByName(name: String): List<Episode> {
+        val list = mutableListOf<Episode>()
+        try {
+            for (obj in db.getEpisodeByName(name)) {
+                val episode = Episode(
+                    obj.id,
+                    obj.name,
+                    obj.airDate,
+                    obj.episode,
+                    obj.characters.split(",").toList()
+                )
+                list.add(episode)
+            }
+        }catch (e: Exception){}
+        return list
+    }
+
     fun getEpisodesByIds(ids: List<String>): List<Episode> {
         val list = mutableListOf<Episode>()
         for (id in ids) {

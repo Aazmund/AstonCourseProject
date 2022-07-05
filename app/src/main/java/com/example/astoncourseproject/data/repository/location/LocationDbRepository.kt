@@ -5,6 +5,7 @@ import com.example.astoncourseproject.data.dao.LocationDao
 import com.example.astoncourseproject.data.database.AppDatabase
 import com.example.astoncourseproject.data.entities.LocationEntity
 import com.example.astoncourseproject.domain.models.Location
+import java.lang.reflect.Executable
 
 class LocationDbRepository(context: Context) {
     private var db: LocationDao = AppDatabase.getInstance(context)?.locationDao()!!
@@ -46,6 +47,23 @@ class LocationDbRepository(context: Context) {
             )
         }
         return location
+    }
+
+    fun getLocationByName(name: String): List<Location>{
+        val list = mutableListOf<Location>()
+        try {
+            for (obj in db.getLocationByName(name)){
+                val location = Location(
+                    obj.id,
+                    obj.name,
+                    obj.type,
+                    obj.dimension,
+                    obj.residents.split(",").toList()
+                )
+                list.add(location)
+            }
+        } catch (e: Exception){}
+        return list
     }
 
     private fun addLocation(location: Location) {

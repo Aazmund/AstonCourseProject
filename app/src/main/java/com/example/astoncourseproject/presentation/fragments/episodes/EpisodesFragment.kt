@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
+import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -44,7 +45,9 @@ class EpisodesFragment : Fragment() {
     @SuppressLint("FragmentLiveDataObserve", "InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         vm.update()
-
+        view.findViewById<ProgressBar>(R.id.episodeProgressBar).apply {
+            visibility = ProgressBar.GONE
+        }
         val episodeAdapter = EpisodeRecyclerAdapter(emptyList()) { position ->
             onItemClicked(position)
         }
@@ -60,7 +63,7 @@ class EpisodesFragment : Fragment() {
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1)) {
+                if (!recyclerView.canScrollVertically(1) && vm.liveData.value?.size!! >= 20) {
                     vm.addNewPage()
                 }
             }
@@ -80,11 +83,11 @@ class EpisodesFragment : Fragment() {
                 window.contentView = v
                 v.findViewById<Button>(R.id.applyFiltersButton).apply {
                     setOnClickListener {
-                        var search = ""
+                        val titles = mutableMapOf<String, String>()
                         v.findViewById<SearchView>(R.id.searchView).apply {
-                            search = this.query.toString()
+                            titles["name"] = this.query.toString()
                         }
-                        vm.registerFilterChanged(search)
+                        vm.registerFilterChanged(titles)
                         window.dismiss()
                     }
                 }

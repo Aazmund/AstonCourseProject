@@ -5,7 +5,7 @@
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.13387151025899766" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/character_filters.xml" value="0.12146892655367232" />
+        <entry key="app/src/main/res/layout/character_filters.xml" value="0.25" />
         <entry key="app/src/main/res/layout/episode_filters.xml" value="0.30885416666666665" />
         <entry key="app/src/main/res/layout/fragment_character_detail.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/fragment_characters.xml" value="0.25" />
