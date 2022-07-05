@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.13387151025899766" />
+        <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.2755" />
+        <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_baseline_tv_24.xml" value="0.2755" />
+        <entry key="app/src/main/res/drawable/launch_screen.xml" value="0.1915" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/character_filters.xml" value="0.25" />
         <entry key="app/src/main/res/layout/episode_filters.xml" value="0.30885416666666665" />

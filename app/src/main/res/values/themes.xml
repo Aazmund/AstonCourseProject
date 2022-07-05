@@ -2,8 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.AstonCourseProject" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/blue_gray_700</item>
+        <item name="colorPrimaryVariant">@color/blue_gray_800</item>
+        <item name="android:navigationBarColor">@color/blue_gray_900</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,5 +13,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.AstonCourseProject.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 </resources>
