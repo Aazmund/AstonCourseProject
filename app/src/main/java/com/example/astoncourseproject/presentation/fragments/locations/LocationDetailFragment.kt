@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -50,7 +51,7 @@ class LocationDetailFragment : Fragment() {
     @SuppressLint("FragmentLiveDataObserve")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val progressBar = view.findViewById<ProgressBar>(R.id.locationDetailProgressBar)
         val locationName = view.findViewById<TextView>(R.id.locationNameTextView)
         val locationType = view.findViewById<TextView>(R.id.locationTypeTextView)
         val locationDimension = view.findViewById<TextView>(R.id.locationDimensionTextView)
@@ -72,7 +73,9 @@ class LocationDetailFragment : Fragment() {
         }
 
         vm.characterLiveData.observe(this) {
+            progressBar.visibility = ProgressBar.VISIBLE
             characterAdapter.updateAdapter(it)
+            progressBar.visibility = ProgressBar.INVISIBLE
         }
     }
 

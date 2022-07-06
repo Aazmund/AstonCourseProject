@@ -44,10 +44,9 @@ class EpisodesFragment : Fragment() {
 
     @SuppressLint("FragmentLiveDataObserve", "InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val progressBar = view.findViewById<ProgressBar>(R.id.episodeProgressBar)
         vm.update()
-        view.findViewById<ProgressBar>(R.id.episodeProgressBar).apply {
-            visibility = ProgressBar.GONE
-        }
+
         val episodeAdapter = EpisodeRecyclerAdapter(emptyList()) { position ->
             onItemClicked(position)
         }
@@ -58,7 +57,9 @@ class EpisodesFragment : Fragment() {
         }
 
         vm.liveData.observe(this) {
+            progressBar.visibility = ProgressBar.VISIBLE
             episodeAdapter.updateAdapter(it)
+            progressBar.visibility = ProgressBar.INVISIBLE
         }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

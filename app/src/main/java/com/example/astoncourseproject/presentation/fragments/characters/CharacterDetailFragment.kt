@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -55,7 +56,7 @@ class CharacterDetailFragment : Fragment() {
     @SuppressLint("UseSupportActionBar", "FragmentLiveDataObserve")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
         val characterName = view.findViewById<TextView>(R.id.characterNameTextView)
         val characterStatus = view.findViewById<TextView>(R.id.characterStatusTextView)
         val characterSpecies = view.findViewById<TextView>(R.id.characterSpeciesTextView)
@@ -93,7 +94,9 @@ class CharacterDetailFragment : Fragment() {
         }
 
         vm.episodeLiveData.observe(this) {
+            progressBar.visibility = ProgressBar.VISIBLE
             episodeAdapter.updateAdapter(it)
+            progressBar.visibility = ProgressBar.INVISIBLE
         }
 
     }

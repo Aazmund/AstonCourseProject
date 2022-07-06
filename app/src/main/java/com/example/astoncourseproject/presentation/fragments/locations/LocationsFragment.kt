@@ -49,9 +49,7 @@ class LocationsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vm.update()
-        view.findViewById<ProgressBar>(R.id.locationProgressBar).apply {
-            visibility = ProgressBar.GONE
-        }
+        val progressBar = view.findViewById<ProgressBar>(R.id.locationProgressBar)
 
         val locationAdapter = LocationRecyclerAdapter(emptyList()) { position ->
             onItemClicked(position)
@@ -63,7 +61,9 @@ class LocationsFragment : Fragment() {
         }
 
         vm.liveData.observe(this) {
+            progressBar.visibility = ProgressBar.VISIBLE
             locationAdapter.updateAdapter(it)
+            progressBar.visibility = ProgressBar.INVISIBLE
         }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

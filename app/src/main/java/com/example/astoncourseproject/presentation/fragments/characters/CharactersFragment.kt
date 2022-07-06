@@ -48,9 +48,7 @@ class CharactersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vm.update()
-        view.findViewById<ProgressBar>(R.id.characterListProgressBar).apply {
-            visibility = ProgressBar.GONE
-        }
+        val progressBar = view.findViewById<ProgressBar>(R.id.characterListProgressBar)
         val characterAdapter = CharacterRecyclerAdapter(emptyList()) { position ->
             onItemClicked(position)
         }
@@ -61,7 +59,9 @@ class CharactersFragment : Fragment() {
         }
 
         vm.liveData.observe(this) {
+            progressBar.visibility = ProgressBar.VISIBLE
             characterAdapter.updateAdapter(it)
+            progressBar.visibility = ProgressBar.INVISIBLE
         }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
